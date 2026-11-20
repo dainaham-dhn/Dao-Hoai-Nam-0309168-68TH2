@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>_17_11</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="RevitAPI">
+      <HintPath>C:\Program Files\Autodesk\Revit 2025\RevitAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="RevitAPIUI">
+      <HintPath>C:\Program Files\Autodesk\Revit 2025\RevitAPIUI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="Build">
+    <PropertyGroup>
+      <RevitAddinsDir>$(AppData)\Autodesk\Revit\Addins\2025\</RevitAddinsDir>
+    </PropertyGroup>
+
+    <Exec Command="if not exist &quot;$(RevitAddinsDir)&quot; mkdir &quot;$(RevitAddinsDir)&quot;" />
+    <Exec Command="if exist &quot;$(TargetDir)*.*&quot; copy /Y &quot;$(TargetDir)*.*&quot; &quot;$(RevitAddinsDir)&quot;" />
+    <Exec Command="if exist &quot;$(ProjectDir)*.addin&quot; copy /Y &quot;$(ProjectDir)*.addin&quot; &quot;$(RevitAddinsDir)&quot;" />
+  </Target>
+
+</Project>
